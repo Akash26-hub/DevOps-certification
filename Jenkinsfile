@@ -6,9 +6,9 @@ pipeline {
             agent { label 'slave'}
             steps {
                 echo 'Install Puppet'
-                sh "wget https://apt.puppetlabs.com/puppet6-release-bionic.deb"
-                sh "chmod 755 puppet6-release-bionic.deb"
-                sh "sudo dpkg -i puppet6-release-bionic.deb"
+                sh "wget -O 'puppet.deb' https://apt.puppetlabs.com/puppet6-release-bionic.deb"
+                sh "chmod 755 puppet.deb"
+                sh "sudo dpkg -i puppet.deb"
                 sh "sudo apt update"
                 sh "sudo apt install -y puppet-agent"
             }
@@ -28,18 +28,7 @@ pipeline {
             }
         }
 
-
-        stage('Sign in puppet certificate') {
-            agent{ label 'slave'}
-            steps {
-              catchError {
-                sh "sudo /opt/puppetlabs/bin/puppet cert sign node1.local"
-              }
-            }
-        }
-
-
-        stage('Install Docker-CE on slave through puppet') {
+        stage('Install Docker on slave through puppet') {
             agent{ label 'slave'}
             steps {
                 sh "sudo /opt/puppetlabs/bin/puppet module install garethr-docker"
@@ -50,8 +39,8 @@ pipeline {
         stage('Git Checkout') {
             agent{ label 'slave'}
             steps {
-                sh "if [ ! -d '/home/jenkins/jenkins_slave/workspace/Certification' ]; then git clone https://github.com/Ad013/Certification.git /home/jenkins/jenkins_slave/workspace/Certification ; fi"
-                sh "cd /home/jenkins/jenkins_slave/workspace/Certification && git checkout master"
+                sh "if [ ! -d '/home/jenkins/jenkins_slave/workspace/Certification' ]; then git clone https://github.com/Akash26-hub/demo-repo.git /home/jenkins/jenkins_slave/workspace/Certification ; fi"
+                sh "cd /home/jenkins/jenkins_slave/workspace/Certification && sudo git checkout master"
             }
         }
         
@@ -64,36 +53,18 @@ pipeline {
             }
         }
 
-        stage('Install Chrome Driver'){
-            agent{ label 'slave'}
-            steps {
-             sh "sudo apt-get update"
-             sh "sudo apt-get install -y unzip xvfb libxi6 libgconf-2-4"
-             sh "sudo apt-get install default-jdk"
-             sh "wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip"
-             sh "unzip chromedriver_linux64.zip"
-             sh "sudo mv chromedriver /usr/bin/chromedriver"
-             sh "sudo chown root:root /usr/bin/chromedriver"
-             sh "sudo chmod +x /usr/bin/chromedriver"
-             sh "wget https://selenium-release.storage.googleapis.com/3.141/selenium-server-standalone-3.141.59.jar"
-             sh "wget http://www.java2s.com/Code/JarDownload/testng/testng-6.8.7.jar.zip"
-             sh "unzip -u testng-6.8.7.jar.zip"
-             sh "xvfb-run java -Dwebdriver.chrome.driver=/usr/bin/chromedriver -jar /home/jenkins/jenkins_slave/workspace/Certification/selenium-server-standalone-3.141.59.jar"
-            }
-        }
+
         stage('Check if selenium test run') {
             agent{ label 'slave'}
             steps {
-                sh "cd /home/jenkins/jenkins_slave/workspace/Certification/src/main/java/com/edureka"
-                sh "export CLASSPATH='/$HOME/Desktop.:selenium-server-standalone-3.141.59.jar:testng-6.8.7.jar' "
-                sh "javac Main.java"
-                sh "java Main"
-            }
+		sh "cd /home/jenkins/jenkins_slave/workspace/Certification/"
+		sh "java -jar devops-webapp-1.0-SNAPSHOT-jar-with-dependencies.jar --headless"
+            	}
             post {
                 failure {
-                    sh "sudo docker rm -f webapp"
+                    sh "echo Failure"
                 }
-            }
-        }
-    }
+			}
+		}
+	}
 }

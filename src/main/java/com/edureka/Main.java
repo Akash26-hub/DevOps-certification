@@ -19,9 +19,9 @@ public class Main {
         firefoxOptions.setBinary(firefoxBinary);
         FirefoxDriver driver = new FirefoxDriver(firefoxOptions);
         driver.get("http://127.0.0.1:1998/index.php");
-        WebElement button = driver.findElement(By.id("about"));
+        WebElement button = driver.findElement(By.id("Contact"));
         assert(button.isDisplayed());
-        System.out.println("Button about is there: " + button.isDisplayed());
+        System.out.println("Contact element is there: " + button.isDisplayed());
         button.click();
         assert(button.getText().equals("about"));
         driver.close();
