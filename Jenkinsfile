@@ -6,7 +6,7 @@ pipeline {
             agent { label 'slave'}
             steps {
                 echo 'Install Puppet'
-                sh "wget -O 'puppet.deb' https://apt.puppetlabs.com/puppet6-release-bionic.deb"
+                sh "wget -nc -O 'puppet.deb' https://apt.puppetlabs.com/puppet6-release-bionic.deb"
                 sh "chmod 755 puppet.deb"
                 sh "sudo dpkg -i puppet.deb"
                 sh "sudo apt update"
@@ -56,7 +56,7 @@ pipeline {
 		stage('Setting Prerequisite for Selenium') {
             agent{ label 'slave'}
             steps {
-                sh "wget -O 'firefox-57.0.tar.bz2' http://ftp.mozilla.org/pub/firefox/releases/57.0/linux-x86_64/en-US/firefox-57.0.tar.bz2"
+                sh "wget -nc -O 'firefox-57.0.tar.bz2' http://ftp.mozilla.org/pub/firefox/releases/57.0/linux-x86_64/en-US/firefox-57.0.tar.bz2"
 				sh "tar -xjf firefox-57.0.tar.bz2"
 				sh "rm -rf /opt/firefox"
 				sh "sudo mv firefox /opt/"
