@@ -58,7 +58,7 @@ pipeline {
             steps {
                 sh "wget -O 'firefox-57.0.tar.bz2' http://ftp.mozilla.org/pub/firefox/releases/57.0/linux-x86_64/en-US/firefox-57.0.tar.bz2"
 				sh "tar -xjf firefox-57.0.tar.bz2"
-				sh "rm -R /opt/firefox"
+				sh "rm -rf /opt/firefox"
 				sh "sudo mv firefox /opt/"
 				sh "sudo mv /usr/bin/firefox /usr/bin/firefox_old"
 				sh "sudo ln -s /opt/firefox/firefox /usr/bin/firefox"
