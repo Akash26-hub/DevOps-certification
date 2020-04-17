@@ -1,0 +1,18 @@
+pipeline {
+    agent none
+    stages {
+        
+        stage('Check if selenium test run') {
+            agent{ label 'slave'}
+            steps {
+		sh "cd /home/jenkins/jenkins_slave/workspace/Certification/"
+		sh "java -jar certification-project-1.0-SNAPSHOT-jar-with-dependencies.jar --headless"
+            	}
+            post {
+                failure {
+                    sh "echo Failure"
+                }
+			}
+		}
+	}
+}
