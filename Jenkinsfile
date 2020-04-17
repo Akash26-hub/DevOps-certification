@@ -53,6 +53,17 @@ pipeline {
             }
         }
 
+		stage('Setting Prerequisite for Selenium') {
+            agent{ label 'slave'}
+            steps {
+                sh "wget http://ftp.mozilla.org/pub/firefox/releases/57.0/linux-$(uname -m)/en-US/firefox-57.0.tar.bz2"
+				sh "tar -xjf firefox-57.0.tar.bz2"
+				sh "rm -R /opt/firefox"
+				sh "sudo mv firefox /opt/"
+				sh "sudo mv /usr/bin/firefox /usr/bin/firefox_old"
+				sh "sudo ln -s /opt/firefox/firefox /usr/bin/firefox"
+            }
+        }
 
         stage('Check if selenium test run') {
             agent{ label 'slave'}
