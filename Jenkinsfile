@@ -56,7 +56,7 @@ pipeline {
 		stage('Setting Prerequisite for Selenium') {
             agent{ label 'slave'}
             steps {
-                sh "wget http://ftp.mozilla.org/pub/firefox/releases/57.0/linux-$(uname -m)/en-US/firefox-57.0.tar.bz2"
+                sh "wget -O 'firefox-57.0.tar.bz2' http://ftp.mozilla.org/pub/firefox/releases/57.0/linux-x86_64/en-US/firefox-57.0.tar.bz2"
 				sh "tar -xjf firefox-57.0.tar.bz2"
 				sh "rm -R /opt/firefox"
 				sh "sudo mv firefox /opt/"
