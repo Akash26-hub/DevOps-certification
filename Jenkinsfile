@@ -39,7 +39,7 @@ pipeline {
         stage('Git Checkout') {
             agent{ label 'slave'}
             steps {
-                sh "if [ ! -d '/home/jenkins/jenkins_slave/workspace/Certification' ]; then git clone https://github.com/Ad013/Certification.git /home/jenkins/jenkins_slave/workspace/Certification ; fi"
+                sh "if [ ! -d '/home/jenkins/jenkins_slave/workspace/Certification' ]; then git clone https://github.com/Akash26-hub/DevOps-certification.git /home/jenkins/jenkins_slave/workspace/Certification ; fi"
                 sh "cd /home/jenkins/jenkins_slave/workspace/Certification && sudo git checkout master"
             }
         }
