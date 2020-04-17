@@ -22,8 +22,9 @@ public class Main {
         WebElement button = driver.findElement(By.id("Contact"));
         assert(button.isDisplayed());
         System.out.println("Contact element is there: " + button.isDisplayed());
+	System.out.println("Executed");
         button.click();
-        assert(button.getText().equals("about"));
+        assert(button.getText().equals("Contact"));
         driver.close();
     }
 }
